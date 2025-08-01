@@ -13,8 +13,16 @@ declare global {
 
 const SupportOptions = () => {
   const openJivoChat = () => {
-    if (window.jivo_api) {
+    if (typeof window !== 'undefined' && window.jivo_api) {
       window.jivo_api.open();
+    } else {
+      // Fallback if Jivo isn't loaded yet
+      console.log('Jivo chat is loading...');
+      setTimeout(() => {
+        if (window.jivo_api) {
+          window.jivo_api.open();
+        }
+      }, 1000);
     }
   };
 

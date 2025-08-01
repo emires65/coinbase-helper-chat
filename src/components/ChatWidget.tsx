@@ -17,10 +17,19 @@ const ChatWidget = () => {
 
   const openJivoChat = () => {
     // This will trigger the Jivo chat widget
-    if (window.jivo_api) {
+    if (typeof window !== 'undefined' && window.jivo_api) {
       window.jivo_api.open();
+      setIsOpen(false); // Close our widget when Jivo opens
+    } else {
+      // Fallback if Jivo isn't loaded yet
+      console.log('Jivo chat is loading...');
+      setTimeout(() => {
+        if (window.jivo_api) {
+          window.jivo_api.open();
+          setIsOpen(false);
+        }
+      }, 1000);
     }
-    setIsOpen(false);
   };
 
   return (
