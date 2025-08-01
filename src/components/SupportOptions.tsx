@@ -1,8 +1,23 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Phone, Mail, FileText, Video, Users } from "lucide-react";
+import { MessageSquare, Mail, FileText, Video, Users, Headphones } from "lucide-react";
+
+// Extend the Window interface to include jivo_api
+declare global {
+  interface Window {
+    jivo_api?: {
+      open: () => void;
+    };
+  }
+}
 
 const SupportOptions = () => {
+  const openJivoChat = () => {
+    if (window.jivo_api) {
+      window.jivo_api.open();
+    }
+  };
+
   const supportOptions = [
     {
       icon: MessageSquare,
@@ -10,15 +25,17 @@ const SupportOptions = () => {
       description: "Get instant help from our support team. Available 24/7 for immediate assistance.",
       action: "Start Chat",
       gradient: "from-primary to-coinbase-blue-light",
-      delay: "0ms"
+      delay: "0ms",
+      onClick: openJivoChat
     },
     {
-      icon: Phone,
-      title: "Phone Support",
-      description: "Speak directly with a Coinbase Wallet expert. Call us for complex issues.",
-      action: "Call Now",
+      icon: Headphones,
+      title: "Customer Support",
+      description: "Connect with our dedicated customer support team for personalized assistance.",
+      action: "Contact Support",
       gradient: "from-coinbase-green to-emerald-400",
-      delay: "100ms"
+      delay: "100ms",
+      onClick: openJivoChat
     },
     {
       icon: Mail,
@@ -88,6 +105,7 @@ const SupportOptions = () => {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300"
+                  onClick={option.onClick}
                 >
                   {option.action}
                 </Button>
